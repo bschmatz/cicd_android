@@ -1,4 +1,4 @@
-# Gruppenaufgabe: Continuous Delivery
+# Gruppenaufgabe: Continuous Delivery - Android App
 
 Ziel der Übung ist es, in definierten Gruppen das zugewiesene Thema im Bereich Continuous Delivery (CD) zu diskutieren und eine praxisorientierte Demonstration vorzubereiten. Dabei soll besonderer Wert auf die Integration und das Verständnis der in der Lehrveranstaltung behandelten Inhalte gelegt werden.
 
