@@ -24,7 +24,7 @@ fun CalculatorScreen(
     val result by viewModel.result.collectAsState()
 
     Column(
-        modifier = modifier,
+        modifier = modifier.padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         TextField(
