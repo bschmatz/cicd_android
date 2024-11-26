@@ -1,7 +1,7 @@
 # TODOs
 
-* [ ] Repository Erstellung
-* [ ] Arbeitsaufteilung
+* [x] Repository Erstellung
+* [x] Arbeitsaufteilung
 * [ ] Simple Calculator App Erstellung
   * [ ] Verwendung von Jetpack compose
 * [ ] Automatisches Testen
