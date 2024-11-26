@@ -2,8 +2,8 @@
 
 * [x] Repository Erstellung
 * [x] Arbeitsaufteilung
-* [ ] Simple Calculator App Erstellung
-  * [ ] Verwendung von Jetpack compose
+* [x] Simple Calculator App Erstellung
+  * [x] Verwendung von Jetpack compose
 * [ ] Automatisches Testen
 * [ ] Verwendung von Secrets in GitHub Actions
 * [ ] Integration weiterer Actions, die zum Thema passen
