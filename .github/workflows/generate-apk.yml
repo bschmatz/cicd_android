@@ -25,6 +25,8 @@ jobs:
           browserstack-upload: false
           upload-to-play-store: false
           gradle-task: 'assembleDebug'
+          ruby-version: '3.1.0'
+          fastlane-version: '2.225.0'
 
       - name: Upload APK as Artifact
         uses: actions/upload-artifact@v3
