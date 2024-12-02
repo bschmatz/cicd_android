@@ -1,0 +1,33 @@
+name: Generate APK
+
+on:
+  push:
+    branches:
+      - 'release/**'
+  pull_request:
+    branches:
+      - 'release/**'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Build Android App
+        uses: sparkfabrik/android-build-action@v1.5.0
+        with:
+          project-path: .
+          output-path: output/cicidApp.apk
+          browserstack-upload: false
+          upload-to-play-store: false
+          gradle-task: 'assembleDebug'
+
+      - name: Upload APK as Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: my-app-apk
+          path: output/cicidApp.apk
