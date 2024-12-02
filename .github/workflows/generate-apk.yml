@@ -27,7 +27,7 @@ jobs:
         uses: sparkfabrik/android-build-action@v1.5.0
         with:
           project-path: .
-          output-path: output/cicidApp.apk
+          output-path: cicidApp.apk
           browserstack-upload: false
           upload-to-play-store: false
           gradle-task: 'assembleDebug'
@@ -38,4 +38,4 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: my-app-apk
-          path: output/cicidApp.apk
+          path: cicidApp.apk
