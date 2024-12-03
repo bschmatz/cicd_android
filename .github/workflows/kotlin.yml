@@ -2,7 +2,7 @@ name: Android CI
 
 on:
   push:
-    branches: [ anit-pattern ]
+    branches: [ "anit-pattern" ]
     tags:
       - "v*"
   pull_request:
