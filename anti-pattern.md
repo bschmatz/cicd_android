@@ -1,9 +1,10 @@
 # Anti-Pattern
 
-[ ] Continuous Ignorance
+[ ] Scheduled Builds  
+Mit jeder Änderung auf dem Branch soll ein Build durch laufen. 
 
-[ ] Scheduled Builds
+[ ] Impeding action with minimal feedback  
+Sende Build Benachrichtigung bei Fehlschlägen.
 
-[ ] Impeding action with minimal feedback
-
-[ ] Spam Feedback
+[ ] Spam Feedback  
+Möglichst nur die wichtigste Benachrichtigungen an den Entwichler senden.
