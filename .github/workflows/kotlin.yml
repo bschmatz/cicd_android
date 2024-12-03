@@ -86,3 +86,9 @@ jobs:
         with:
           name: my-app-apk
           path: cicidApp.apk
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/v')
+        with:
+          files: cicidApp.apk
+          generate_release_notes: true
