@@ -35,6 +35,11 @@ jobs:
           ruby-version: '3.1.0'
           fastlane-version: '2.225.0'
 
+      - name: Debug Secrets
+        run: |
+            echo "Alias length: ${#SECRETS_ALIAS}" 
+            echo "Signing key length: ${#SECRETS_SIGNING_KEY}" 
+
       - name: Sign app APK
         uses: r0adkll/sign-android-release@v1
         id: sign_app
