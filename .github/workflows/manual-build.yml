@@ -37,8 +37,15 @@ jobs:
 
       - name: Debug Secrets
         run: |
-            echo "Alias length: ${#SECRETS_ALIAS}" 
-            echo "Signing key length: ${#SECRETS_SIGNING_KEY}" 
+          echo "Alias length: ${#ALIAS}"
+          echo "Signing key length: ${#SIGNING_KEY}"
+          echo "Key store password length: ${#KEY_STORE_PASSWORD}"
+          echo "Key password length: ${#KEY_PASSWORD}"
+        env:
+          SIGNING_KEY: ${{ secrets.SIGNING_KEY }}
+          ALIAS: ${{ secrets.ALIAS }}
+          KEY_STORE_PASSWORD: ${{ secrets.KEY_STORE_PASSWORD }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
 
       - name: Sign app APK
         uses: r0adkll/sign-android-release@v1
