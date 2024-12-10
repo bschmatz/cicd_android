@@ -1,5 +1,6 @@
-package com.example.androidcicdapp.data.calculator
+package com.example.androidcicdapp.calculator
 
+import com.example.androidcicdapp.data.calculator.CalculatorImpl
 import org.junit.Test
 import org.junit.Assert.*
 
