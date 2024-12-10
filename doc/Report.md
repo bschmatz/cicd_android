@@ -21,6 +21,6 @@ Vorgehensweisen und abgeschlossene Aufgaben gemeinsam in der Gruppe zu den jewei
 
 * Fehler in Unit Tests behoben
   * Bei Fehlern failed die Pipeline
-* Documentation zu Anti-Patterns hinzugefügt
-* Vorbereitung auf Präsentation
-* Letzte Änderungen an Dokumentation
+* Dokumentation zu Anti-Patterns hinzugefügt
+* Vorbereitung auf die Präsentation
+* Letzte Änderungen an der Dokumentation
