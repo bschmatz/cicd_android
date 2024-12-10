@@ -33,7 +33,7 @@ Berichte zur Vorgehensweisen und abgeschlossene Aufgaben sind in [`Report.md`](.
 
 ## Android App - Taschenrechner
 
-Bei der Beispiel Application handelt es sich um einen einfachen Taschenrechner. Dieser beherrscht derzeit nur die vier Grundrechnungsarten. Anhand dieses Beispielprojektes sollen die nachfolgenden Github Actions angewandt, automatisch getestet und ein Release erstellt werden.
+Bei der Beispiel Application handelt es sich um einen einfachen Taschenrechner. Dieser beherrscht derzeit nur die vier Grundrechnungsarten. Anhand dieses Beispielprojektes sollen die nachfolgenden Github Actions angewandt, automatisch getestet und ein Release erstellt werden, wenn ein Git Tag für die Version vorhanden ist.
 
 > Taschenrechner nach dem Starten der App
 >
@@ -47,7 +47,7 @@ Nachfolgend stehen Erklärungen zu den einzelnen Build Jobs und Steps inklusive 
 
 ### GitHub Action Jobs und Steps
 
-Die GitHub Actions werden beim Pushen auf Main Branch ausgelöst. Außerdem muss ein Tag, welcher die Version setzt, angegeben werden.
+Die GitHub Actions werden beim Pushen auf Main Branch ausgelöst. Außerdem muss ein Tag, welcher die Version setzt, angegeben werden, falls ein Release erstellt werden soll.
 
 - **Job: lint - Static Code Analysis**
   - Statische Code Analyse mit Hilfe von Lint
