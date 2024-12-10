@@ -14,6 +14,12 @@ Dieses Projekt ist ein Beispielprojekt zur Verwendung von GitHub Actions und Ers
   - [Testing](#testing)
   - [zentrale Fragen](#zentrale-fragen)
   - [Anti-Patterns](#anti-patterns)
+    - [Vernachlässigte Anti-Patterns](#vernachlässigte-anti-patterns)
+    - [Abgewendete Anti-Patterns](#abgewendete-anti-patterns)
+      - [Broken Build](#broken-build)
+      - [IDE-only Build](#ide-only-build)
+      - [Works on My Machine](#works-on-my-machine)
+      - [Scheduled Builds](#scheduled-builds)
 
 ## TODOs
 
@@ -79,7 +85,7 @@ lint:
 ---
 
 - **Job: test - Unit Tests**
-  - Testen der App mit Hilfe der Unit Tests, welche im Souce Code implementiert sind
+  - Testen der App mit Hilfe der Unit Tests, welche im Source Code implementiert sind
   - Verwendung von [JUnit](https://junit.org) in der Implementierung
   - Verwendet Ubuntu Container
   - **Step 1: Set up JDK 17**
@@ -254,10 +260,13 @@ Beispiel Code:
   Für die GitHub Actions werden Ubuntu Docker Container verwendet, auf welchen der aktuelle Sourcecode kompiliert wird. Lokal ist ein kompilieren und testen der App mit Android Studio möglich.
 
 ## Anti-Patterns
-Eine Verrausetzung für diesen Teil ist das man die gennanten Anti-Patterns kennt. 
 
-### Vernachläsigte Anti-Patterns
-Anti-Patterns, die keinen negativen Effekt verurachen, da der Rahmens des Projektes zugering ist:
+Eine Voraussetzung für diesen Teil ist das man die genannten Anti-Patterns kennt.
+
+### Vernachlässigte Anti-Patterns
+
+Anti-Patterns, die keinen negativen Effekt verursachen, da der Rahmens des Projektes zu gering ist:
+
 - Infrequent Check-In
 - Bottleneck Commits
 - Bloated Build
@@ -265,24 +274,28 @@ Anti-Patterns, die keinen negativen Effekt verurachen, da der Rahmens des Projek
 - Slow Machine
 - Continuous Ignorance
 
-
 Da durch das GitHub verwendet wurde um das Repository remote zu speichern und wir kein Unternehmen sind,
 muss jeder seine Feedback selbst einstellen.
+
 - Impeding action with minimal feedback
-- Spam Feedback  
+- Spam Feedback
 
 ### Abgewendete Anti-Patterns
 
 #### Broken Build
-Es wurde ausgeschalten das auf den main gepushed werden kann, um alle dazu zu zwingen ein ihren eigenen Branches zu arbeiten.  
+
+Es wurde ausgeschaltet, dass auf den main Branch gepushed werden kann, um alle dazu zu zwingen in ihren eigenen Branches zu arbeiten.  
 Statt dessen muss ein Pull-Request erstellt werden um seine Änderungen auf den main zu bekommen.  
 
 #### IDE-only Build
+
 Die Pipeline wird automatisch ausgeführt wenn ein neues commit auf den main Branch gepushed wird.
 In dieser Pipeline werden der Build und die Tests ausführt.
 
 #### Works on My Machine
-Diese Pattern wird durch das beim "IDE-only Build" genannten vermieden.
+
+Diese Pattern wird durch das beim "IDE-only Build" Genannten vermieden.
 
 #### Scheduled Builds
-In diesme Prjekt gibt es keine "Scheduled Builds".
+
+In diesem Projekt gibt es keine "Scheduled Builds".
