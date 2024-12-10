@@ -31,12 +31,6 @@ class CalculatorImplTest {
         assertEquals(3.0, result, 0.0)
     }
 
-    @Test
-    fun divideByZero() {
-        val result = calculator.divide(99.0, 0.0)
-        assertEquals(3.0, result, 0.0)
-    }
-
     @Test(expected = IllegalArgumentException::class)
     fun divide_divideByZero_throwsException() {
         calculator.divide(1.0, 0.0)
