@@ -9,11 +9,11 @@ zurück zum [README.md](./README.md)
 * [x] Simple Calculator App Erstellung
   * [x] Verwendung von Jetpack compose
 * [x] Automatisches Testen
-* [ ] Verwendung von Secrets in GitHub Actions
-* [ ] Integration weiterer Actions, die zum Thema passen
+* [x] Verwendung von Secrets in GitHub Actions
+* [x] Integration weiterer Actions, die zum Thema passen
 * [ ] Dokumentation
   * [x] Zusammenfassung
   * [x] App im Detail erklären
-  * [ ] Aufbau der Tests
-  * [ ] Aufbau des Build Systems
+  * [x] Aufbau der Tests
+  * [x] Aufbau des Build Systems
   * [ ] Anti-pattern
