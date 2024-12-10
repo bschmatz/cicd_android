@@ -18,3 +18,9 @@ Vorgehensweisen und abgeschlossene Aufgaben gemeinsam in der Gruppe zu den jewei
 * Erstellung simpler Testcases für die Unit Tests
 
 ## 10.12.2024 ONLINE Unterricht
+
+* Fehler in Unit Tests behoben
+  * Bei Fehlern failed die Pipeline
+* Documentation zu Anti-Patterns hinzugefügt
+* Vorbereitung auf Präsentation
+* Letzte Änderungen an Dokumentation

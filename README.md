@@ -25,13 +25,15 @@ Dieses Projekt ist ein Beispielprojekt zur Verwendung von GitHub Actions und Ers
 
 Aktuelle TODOs werden separate in [`TODO.md`](./TODO.md) aufgelistet.
 
+Berichte zur Vorgehensweisen und abgeschlossene Aufgaben sind in [`Report.md`](./doc/Report.md) zu finden.
+
 ## Git Repository
 
-[https://github.com/bschmatz/cicd_android](https://github.com/bschmatz/cicd_android)
+[https://github.com/max-pfi/cicd_android](https://github.com/max-pfi/cicd_android)
 
 ## Android App - Taschenrechner
 
-Bei der Beispiel Application handelt es sich um einen einfachen Taschenrechner. Dieser beherrscht derzeit nur die vier Grundrechnungsarten. Anhand dieses Beispielprojektes sollen die nachfolgenden Github Actions angewandt, automatisch getestet und ein Release erstellt werden.
+Bei der Beispiel Application handelt es sich um einen einfachen Taschenrechner. Dieser beherrscht derzeit nur die vier Grundrechnungsarten. Anhand dieses Beispielprojektes sollen die nachfolgenden Github Actions angewandt, automatisch getestet und ein Release erstellt werden, wenn ein Git Tag für die Version vorhanden ist.
 
 > Taschenrechner nach dem Starten der App
 >
@@ -39,13 +41,13 @@ Bei der Beispiel Application handelt es sich um einen einfachen Taschenrechner. 
 
 ## GitHub Actions
 
-Unter [`.github/workflows/kotlin.yml`](./.github/workflows/kotlin.yml) befindet sich die vollständigen für die [GitHub Actions](https://github.com/bschmatz/cicd_android/actions) definierten Jobs und Steps.
+Unter [`.github/workflows/kotlin.yml`](./.github/workflows/kotlin.yml) befindet sich die vollständigen für die [GitHub Actions](https://github.com/max-pfi/cicd_android/actions) definierten Jobs und Steps.
 
 Nachfolgend stehen Erklärungen zu den einzelnen Build Jobs und Steps inklusive Beispiel code aus der `kotlin.yml` Datei.
 
 ### GitHub Action Jobs und Steps
 
-Die GitHub Actions werden beim Pushen auf Main Branch ausgelöst. Außerdem muss ein Tag, welcher die Version setzt, angegeben werden.
+Die GitHub Actions werden beim Pushen auf Main Branch ausgelöst. Außerdem muss ein Tag, welcher die Version setzt, angegeben werden, falls ein Release erstellt werden soll.
 
 - **Job: lint - Static Code Analysis**
   - Statische Code Analyse mit Hilfe von Lint
@@ -195,7 +197,7 @@ runs-on: ubuntu-latest
 
 ## Testing
 
-Unter [`./app/src/test/java/com/example/androidcicdapp/data/calculator/CalculatorImplTest.kt`](app/src/test/java/com/example/androidcicdapp/data/calculator/CalculatorImplTest.kt) befinden sich die vollständigen implementierten [JUnit](https://junit.org) Testcases, welche mit Hilfe der GitHub Actions ausgeführt werden. Dabei handelt es sich um einfach Überprüfungen der Funktionalität des Taschenrechners.
+Unter [`app/src/test/java/com/example/androidcicdapp/data/calculator/CalculatorImplTest.kt`](./app/src/test/java/com/example/androidcicdapp/calculator/CalculatorImplTest.kt) befinden sich die vollständigen implementierten [JUnit](https://junit.org) Testcases, welche mit Hilfe der GitHub Actions ausgeführt werden. Dabei handelt es sich um einfach Überprüfungen der Funktionalität des Taschenrechners.
 
 Beispiel Code:
 
@@ -229,7 +231,7 @@ Beispiel Code:
 
 - *Was ist notwendig zur Build-Automatisierung?*
 
-  Zur Build-Automatisierung werden GitHub Actions und die damit verbundene Konfigurationdatei [`./.github/workflows/kotlin.yml`](.github/workflows/kotlin.yml) benötigt.
+  Zur Build-Automatisierung werden GitHub Actions und die damit verbundene Konfigurationdatei [`.github/workflows/kotlin.yml`](./.github/workflows/kotlin.yml) benötigt.
 
 - *Welchen Vorteil liefert Testautomatisierung in CI/CD-Pipelines?*
 
