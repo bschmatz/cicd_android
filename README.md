@@ -133,7 +133,7 @@ lint:
     - **Step 3: Build Android App**
       - Android App mit Hilfe von `sparkfabrik/android-build-action@v1.5.0` builden
       - Project und Output Pfade konfigurieren
-      - `assambleRelease` festlegen
+      - `assembleRelease` festlegen
     - **Step 4: Sign app APK**
       - signieren der erstellten `APK`
       - GitHub Secrets für Key und Passwörter verwenden
