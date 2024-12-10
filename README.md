@@ -1,16 +1,19 @@
-# CI/CD Pipelines mit einer Android App
+# CI/CD Pipeline mit einer Android App
 
 Dieses Projekt ist ein Beispielprojekt zur Verwendung von GitHub Actions und Erstellung einer Release Pipeline für eine Android Application. Das Projekt ist im Rahmen einer Gruppenarbeit der FH-Joanneum Kapfenberg mit [eigener Angabe und Fragestellungen](./doc/Angabe.md) entstanden.
 
 ## Table of Contents
 
-- [CI/CD Pipelines mit einer Android App](#cicd-pipelines-mit-einer-android-app)
+- [CI/CD Pipeline mit einer Android App](#cicd-pipeline-mit-einer-android-app)
   - [Table of Contents](#table-of-contents)
   - [TODOs](#todos)
   - [Git Repository](#git-repository)
   - [Android App - Taschenrechner](#android-app---taschenrechner)
   - [GitHub Actions](#github-actions)
+    - [GitHub Action Jobs und Steps](#github-action-jobs-und-steps)
+  - [Testing](#testing)
   - [zentrale Fragen](#zentrale-fragen)
+  - [Anti-Patterns](#anti-patterns)
 
 ## TODOs
 
@@ -24,29 +27,32 @@ Aktuelle TODOs werden separate in [`TODO.md`](./TODO.md) aufgelistet.
 
 Bei der Beispiel Application handelt es sich um einen einfachen Taschenrechner. Dieser beherrscht derzeit nur die vier Grundrechnungsarten. Anhand dieses Beispielprojektes sollen die nachfolgenden Github Actions angewandt, automatisch getestet und ein Release erstellt werden.
 
-> ![Taschenrechner App](./doc/images/Calculator-App.png)
 > Taschenrechner nach dem Starten der App
+>
+> ![Taschenrechner App](./doc/images/Calculator-App.png)
 
 ## GitHub Actions
 
-Unter `.github/workflows/kotlin.yml` befindet sich die für die [GitHub Actions](https://github.com/bschmatz/cicd_android/actions) definierten Steps.
+Unter [`.github/workflows/kotlin.yml`](./.github/workflows/kotlin.yml) befindet sich die vollständigen für die [GitHub Actions](https://github.com/bschmatz/cicd_android/actions) definierten Jobs und Steps.
+
+Nachfolgend stehen Erklärungen zu den einzelnen Build Jobs und Steps inklusive Beispiel code aus der `kotlin.yml` Datei.
+
+### GitHub Action Jobs und Steps
+
+Die GitHub Actions werden beim Pushen auf Main Branch ausgelöst. Außerdem muss ein Tag, welcher die Version setzt, angegeben werden.
+
+- **Job: lint - Static Code Analysis**
+  - Statische Code Analyse mit Hilfe von Lint
+  - Verwendet Ubuntu Container
+    - **Step 1: Set up JDK 17**
+      - JDK 17 aufsetzen mit Hilfe von vordefinierter Action `actions/setup-java@v3`
+    - **Step 2: Run Lint**
+      - Lint Test starten mit `./gradlew lintDebug`
+    - **Step 3: Upload Lint Results**
+      - Lint Testergebnisse unter `app/build/reports` speichern
 
 ```yml
-name: Android CI
-
-on:
-  push:
-    branches: [ main ]
-    tags:
-      - "v*"
-  pull_request:
-    branches: [ main ]
-
-permissions:
-  contents: write
-
-jobs:
-  lint:
+lint:
     name: Static Code Analysis
     runs-on: ubuntu-latest
     steps:
@@ -68,9 +74,22 @@ jobs:
         with:
           name: lint-reports
           path: app/build/reports
+```
 
+---
 
-  test:
+- **Job: test - Unit Tests**
+  - Testen der App mit Hilfe der Unit Tests, welche im Souce Code implementiert sind
+  - Verwendung von [JUnit](https://junit.org) in der Implementierung
+  - Verwendet Ubuntu Container
+  - **Step 1: Set up JDK 17**
+    - JDK 17 aufsetzen mit Hilfe von vordefinierter Action `actions/setup-java@v3`
+  - **Step 2: Run Tests**
+    - Lint Test starten mit `./gradlew testDebug`
+  - **Step 3: Upload Test Results**
+    - Testergebnisse unter `app/build/reports/tests` speichern
+
+```yml
     name: Unit Tests
     needs: [lint]
     runs-on: ubuntu-latest
@@ -92,10 +111,32 @@ jobs:
         with:
           name: test-reports
           path: app/build/reports/tests
+```
 
-  build:
-    runs-on: ubuntu-latest
-    if: startsWith(github.ref, 'refs/tags/v')
+---
+
+- **Job: build**
+  - kompilieren der Android App und Erstellung einer signed APK
+  - Verwendet Ubuntu Container
+    - **Step 1: Checkout code**
+      - Aktuellen Source Stand auschecken
+    - **Step 2: Set up Java 17**
+      - JDK 17 aufsetzen mit Hilfe von vordefinierter Action `actions/setup-java@v3`
+    - **Step 3: Build Android App**
+      - Android App mit Hilfe von `sparkfabrik/android-build-action@v1.5.0` builden
+      - Project und Output Pfade konfigurieren
+      - `assambleRelease` festlegen
+    - **Step 4: Sign app APK**
+      - signieren der erstellten `APK`
+      - GitHub Secrets für Key und Passwörter verwenden
+    - **Step 5: Upload Signed APK as Artifact**
+      - Hochladen der signierten `APK` als Build Artefakt
+    - **Step 6: Create Release**
+      - Release in GitHub mit dem Versions Tag erstellen
+      - Release Notes erstellen
+
+```yml
+runs-on: ubuntu-latest
     needs: test
     steps:
       - name: Checkout code
@@ -114,36 +155,83 @@ jobs:
           output-path: cicidApp.apk
           browserstack-upload: false
           upload-to-play-store: false
-          gradle-task: 'assembleDebug'
+          gradle-task: 'assembleRelease'
           ruby-version: '3.1.0'
           fastlane-version: '2.225.0'
 
-      - name: Upload APK as Artifact
-        uses: actions/upload-artifact@v3
+      - name: Sign app APK
+        uses: r0adkll/sign-android-release@v1
+        id: sign_app
         with:
-          name: my-app-apk
-          path: cicidApp.apk
+          releaseDirectory: .
+          signingKeyBase64: ${{ secrets.SIGNING_KEY }}
+          alias: ${{ secrets.ALIAS }}
+          keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
+          keyPassword: ${{ secrets.KEY_PASSWORD }}
+        if: startsWith(github.ref, 'refs/tags/v')  
+        env:
+          BUILD_TOOLS_VERSION: "34.0.0"
+
+      - name: Upload Signed APK as Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Signed app bundle
+          path: ${{steps.sign_app.outputs.signedReleaseFile}}
+        if: startsWith(github.ref, 'refs/tags/v')
+
       - name: Create Release
         uses: softprops/action-gh-release@v1
-        if: startsWith(github.ref, 'refs/tags/v')
         with:
-          files: cicidApp.apk
+          files: ${{steps.sign_app.outputs.signedReleaseFile}}
           generate_release_notes: true
+        if: startsWith(github.ref, 'refs/tags/v')
+```
+
+## Testing
+
+Unter [`./app/src/test/java/com/example/androidcicdapp/data/calculator/CalculatorImplTest.kt`](app/src/test/java/com/example/androidcicdapp/data/calculator/CalculatorImplTest.kt) befinden sich die vollständigen implementierten [JUnit](https://junit.org) Testcases, welche mit Hilfe der GitHub Actions ausgeführt werden. Dabei handelt es sich um einfach Überprüfungen der Funktionalität des Taschenrechners.
+
+Beispiel Code:
+
+```Kotlin
+@Test
+    fun add_isCorrect() {
+        val result = calculator.add(17.0, 4.0)
+        assertEquals(21.0, result, 0.0)
+    }
+
+    @Test
+    fun subtract_isCorrect() {
+        val result = calculator.subtract(10.0, 1.5)
+        assertEquals(8.5, result, 0.0)
+    }
+
+    @Test
+    fun multiply_isCorrect() {
+        val result = calculator.multiply(5.0, 5.0)
+        assertEquals(25.0, result, 0.0)
+    }
+
+    @Test
+    fun divide_isCorrect() {
+        val result = calculator.divide(99.0, 33.0)
+        assertEquals(3.0, result, 0.0)
+    }
 ```
 
 ## zentrale Fragen
 
 - *Was ist notwendig zur Build-Automatisierung?*
 
-  Zur Build-Automatisierung werden GitHub Actions und die damit verbundene Konfigurationdatei `.github/workflows/kotlin.yml` benötigt.
+  Zur Build-Automatisierung werden GitHub Actions und die damit verbundene Konfigurationdatei [`./.github/workflows/kotlin.yml`](.github/workflows/kotlin.yml) benötigt.
 
 - *Welchen Vorteil liefert Testautomatisierung in CI/CD-Pipelines?*
 
-  Der wohl größte Vorteil liegt in der Übersichtlichkeit beziehungsweise der genauen Aufschlüsselung jedes einzelnen Build-Steps in Form von Logs oder sogar eigenen Reports.
+  Der wohl größte Vorteil liegt in der Übersichtlichkeit beziehungsweise der genauen Aufschlüsselung jedes einzelnen Build-Steps in Form von Logs oder sogar eigenen Reports. Zusätzlich ergibt sich für Entwickler kein Mehraufwand bei der Release oder Test Erstellung. Dank der Pipeline werden neue Features sofort getestet und bereitgestellt.
 
 - *Wozu dient Containerization in der Entwicklung und in CI/CD-Pipelines?*
 
-  Containerization dient zur Vermeidung von Fehlerquellen wie *It runs on my machine* und zur flexibleren Konfiguration der verwendeten Compiler und Build-Tools. Versionen und Dependencies können so einfacher gehandhabt werden.
+  Containerization dient zur Vermeidung von Fehlerquellen wie "*It runs on my machine*" und zur flexibleren Konfiguration der verwendeten Compiler und Build-Tools. Versionen und Dependencies können so einfacher gehandhabt werden.
 
 - *Wie kann Infrastructure as Code dabei unterstützen?*
 
@@ -164,3 +252,5 @@ jobs:
 - *Welche Umgebung ist notwendig zum Ausführen bzw. zur Bereitstellung des jeweiligen Themas?*
 
   Für die GitHub Actions werden Ubuntu Docker Container verwendet, auf welchen der aktuelle Sourcecode kompiliert wird. Lokal ist ein kompilieren und testen der App mit Android Studio möglich.
+
+## Anti-Patterns
