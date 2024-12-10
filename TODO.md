@@ -11,9 +11,9 @@ zurück zum [README.md](./README.md)
 * [x] Automatisches Testen
 * [x] Verwendung von Secrets in GitHub Actions
 * [x] Integration weiterer Actions, die zum Thema passen
-* [ ] Dokumentation
+* [x] Dokumentation
   * [x] Zusammenfassung
   * [x] App im Detail erklären
   * [x] Aufbau der Tests
   * [x] Aufbau des Build Systems
-  * [ ] Anti-pattern
+  * [x] Anti-pattern
